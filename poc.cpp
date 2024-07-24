@@ -1,8 +1,14 @@
 #pragma leco tool
 
 import sicfg;
+import silog;
 
 int main() {
-  sicfg::boolean("test", true);
-  bool b = sicfg::boolean("test");
+  bool val = sicfg::boolean("test");
+  silog::log(silog::info, "test was %d", val);
+  
+  sicfg::boolean("test", !val);
+
+  val = sicfg::boolean("test");
+  silog::log(silog::info, "test is %d", val);
 }
