@@ -1,9 +1,15 @@
 export module sicfg;
 import jute;
+import traits;
+
+using namespace traits::ints;
 
 export namespace sicfg {
   void boolean(jute::view name, bool value);
   bool boolean(jute::view name);
+
+  void number(jute::view name, uint32_t value);
+  uint32_t number(jute::view name);
 }
 
 #if LECO_TARGET_MACOSX

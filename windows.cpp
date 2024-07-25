@@ -29,19 +29,21 @@ static auto key() {
   return key;
 }
 
-void sicfg::boolean(jute::view name, bool val) {
+void sicfg::boolean(jute::view name, bool val) { number(name, val ? 1 : 0); }
+bool sicfg::boolean(jute::view name) { return number(name) > 0; }
+
+void sicfg::number(jute::view name, uint32_t val) {
   auto value_name = name.cstr();
 
-  uint32_t dw = val ? 1 : 0;
   RegSetValueExA(key(), value_name.begin(), 0, REG_DWORD,
-                 reinterpret_cast<uint8_t *>(&dw), sizeof(dw));
+                 reinterpret_cast<uint8_t *>(&val), sizeof(val));
 }
-bool sicfg::boolean(jute::view name) {
+uint32_t sicfg::number(jute::view name) {
   auto value_name = name.cstr();
 
   uint32_t value{};
   DWORD size = sizeof(value);
   auto res = RegQueryValueExA(key(), value_name.begin(), nullptr, nullptr,
                               reinterpret_cast<uint8_t *>(&value), &size);
-  return res == ERROR_SUCCESS ? (value > 0) : false;
+  return res == ERROR_SUCCESS ? value : 0;
 }
