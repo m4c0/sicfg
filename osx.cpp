@@ -6,7 +6,7 @@ import hai;
 
 namespace {
 struct deleter {
-  void operator()(CFStringRef r) { CFRelease(r); }
+  void operator()(CFTypeRef r) { CFRelease(r); }
 };
 using cfstr = hai::holder<const __CFString, deleter>;
 } // namespace
@@ -31,4 +31,21 @@ bool sicfg::boolean(jute::view name) {
   auto res = CFPreferencesGetAppBooleanValue(
       *key, kCFPreferencesCurrentApplication, &exists);
   return exists ? res : false;
+}
+
+void sicfg::number(jute::view name, uint32_t val) {
+  auto key = to_cfstr(name);
+  hai::holder<const __CFNumber, deleter> value{
+      CFNumberCreate(nullptr, kCFNumberSInt32Type, &val)};
+
+  CFPreferencesSetAppValue(*key, *value, kCFPreferencesCurrentApplication);
+  CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
+}
+uint32_t sicfg::number(jute::view name) {
+  auto key = to_cfstr(name);
+
+  Boolean exists{};
+  auto res = CFPreferencesGetAppIntegerValue(
+      *key, kCFPreferencesCurrentApplication, &exists);
+  return exists ? res : 0;
 }
