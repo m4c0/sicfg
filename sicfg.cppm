@@ -12,7 +12,7 @@ export namespace sicfg {
   uint32_t number(jute::view name);
 }
 
-#if LECO_TARGET_MACOSX
+#if LECO_TARGET_APPLE
 #pragma leco add_impl osx
 #elif LECO_TARGET_WINDOWS
 #pragma leco add_impl windows
