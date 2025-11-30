@@ -23,7 +23,7 @@ static auto key() {
   auto [_, file] = jute::view{path}.rsplit('\\');
   auto [stem, ext] = file.split('.');
 
-  auto subkey = ("Software\\m4c0\\" + stem).cstr();
+  auto subkey = (jute::view{"Software\\m4c0\\"} + stem).cstr();
   RegCreateKeyExA(HKEY_CURRENT_USER, subkey.begin(), 0, nullptr, 0,
                   KEY_WRITE | KEY_READ, nullptr, &key, nullptr);
   return key;
