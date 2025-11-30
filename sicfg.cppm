@@ -16,4 +16,6 @@ export namespace sicfg {
 #pragma leco add_impl osx
 #elif LECO_TARGET_WINDOWS
 #pragma leco add_impl windows
+#elif LECO_TARGET_WASM
+#pragma leco add_impl wasm
 #endif
